@@ -105,3 +105,10 @@ mvn install #安装到本地仓库
 |test|||||
 |provided|||||
 |runtime|runtime|test|provided|runtime|
+
+## 声明周期
+
+1. clean、
+2. default
+3. site
+
