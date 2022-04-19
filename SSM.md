@@ -11,7 +11,7 @@ full-stack 代表各层都有解决方案
 
 TODO  lombok var 
 
-## 开发步骤
+### 开发步骤
 
 1. 导入坐标
 2. 创建Bean
@@ -126,8 +126,54 @@ xmlns:p="http://www.springframework.org/schema/p"
 
 getBean()
 
-1. id 
-2. Class<T> 
+1. id
+2. Class< T >
 
 ## 4.spring配置数据源
 
+常见数据源（连接池）DBCP、C3P0、BoneCP、Druid
+
+硬编码
+
+```java
+        ResourceBundle rb = ResourceBundle.getBundle("jdbc");
+        String driver = rb.getString("jdbc.driver");
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setDriverClassName(driver);
+        dataSource.setUrl();
+        dataSource.setUsername();
+        dataSource.setPassword();
+        DruidPooledConnection connection = dataSource.getConnection();
+        connection.close();
+```
+
+配置文件
+
+```xml
+ <bean  xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+        <context:property-placeholder location="classpath:db.properties"/>
+```
+
+```java
+        ApplicationContext app = new ClassPathXmlApplicationContext("applicationContext.xml");
+        DruidDataSource dataSource = (DruidDataSource) app.getBean(DataSource.class);
+
+        System.out.println(dataSource);
+        System.out.println(dataSource);
+        try {
+            DruidPooledConnection connection =  dataSource.getConnection();
+            System.out.println(connection);
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+```
+
+```properties
+jdbc.driver=com.mysql.cj.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:3306
+jdbc.username=fuhua
+jdbc.password=11057
+```
