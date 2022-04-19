@@ -150,10 +150,19 @@ getBean()
 配置文件
 
 ```xml
- <bean  xmlns:context="http://www.springframework.org/schema/context"
+ <beans  xmlns:context="http://www.springframework.org/schema/context"
         xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
         <context:property-placeholder location="classpath:db.properties"/>
+
+    <bean id="d" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+</beans>
 ```
 
 ```java
@@ -171,9 +180,53 @@ getBean()
         }
 ```
 
+*dataSource是接口*
+
 ```properties
 jdbc.driver=com.mysql.cj.jdbc.Driver
 jdbc.url=jdbc:mysql://localhost:3306
 jdbc.username=fuhua
 jdbc.password=11057
+```
+
+*一定要加jdbc，要么识别不出来在xml*
+
+## 5.spring 注解开发
+
+### 原始注解
+
+主要代替`<bean>`配置
+
+|注解|说明|
+|-|-|
+|@Component|使用在类上实例化Bean|
+|@Controller|使用在web层类上实例化Bean|
+|@Service|使用在Service层类上实例化Bean|
+|@Repository|使用在dao层类上实例化Bean|
+|@Autowired|使用字段上用于根据类型依赖注入|
+|@Qualifier|结合@Autowired一起使用，用于根据名称进行依赖注入|
+|@Resouce|相当于@Autowired+@qualifier，按照名称进行注入|
+|@Value|注入普通属性|
+|@Scope|标注Bean的作用范围|
+|@PostConstruct|初始化方法|
+|@PreDestroy|销毁方法|
+
+配置组件扫描
+
+```xml
+<context:component-scan base-package="edu.ccit"/>
+```
+
+### 新注解
+
+|注解|说明|
+|-|-|
+|@Configuration|当前为一个spring配置类|
+|@ComponentScan|用于指定要扫描的包|
+|@Bean|使用在方法上，标注该类的返回值到spring容器中|
+|@PropertySource|加载.properties文件中的配置|
+|@Import|用于导入其他配置类|
+
+```java
+ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfiguration.class);
 ```
