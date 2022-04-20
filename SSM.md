@@ -147,6 +147,21 @@ getBean()
         connection.close();
 ```
 
+POM
+
+```xml
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.2.8</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.28</version>
+        </dependency>
+```
+
 配置文件
 
 ```xml
@@ -229,4 +244,26 @@ jdbc.password=11057
 
 ```java
 ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfiguration.class);
+```
+
+## 5.Junit
+
+SpringJunit负责创建Spring容器，需配置配置文件
+将测试Bean直接注入
+
+![Spring集成Junit](img/SSM/spring集成Junit.png)
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = SpringConfiguration.class)//("*.xml")
+```
+
+POM
+
+```xml
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.3.18</version>
+        </dependency>
 ```
