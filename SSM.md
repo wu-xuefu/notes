@@ -267,3 +267,87 @@ POM
             <version>5.3.18</version>
         </dependency>
 ```
+
+## 6.SpringWEB
+
+```xml
+<listener>
+<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+```
+
+```java
+WebApplicationContext webApplicationContext = WebApplicationContextUtils.
+System.out.println(webApplicationContext);
+UserService bean = webApplicationContext.getBean(UserService.class);
+```
+
+## 7.springMVC
+
+开发步骤
+
+![MVC开发步骤](img/SSM/MVC开发步骤.png)
+
+springmvc流程图
+
+![springmvc流程图](img/SSM/springMVC流程图.png)
+
+web.xml
+
+```xml
+  <servlet>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring-mvc.xml</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+```
+
+扫描组件
+
+```xml
+<!--1-->
+<context:component-scan base-package="edu.ccit.controller"/>
+<!--2-->
+<context:component-scan base-package="edu.ccit.controller">
+    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+</context:component-scan>
+```
+
+![spring execution流程](img/SSM/spring执行流程.png)
+
+### SMVC注解解析
+
+`@RequestMapping`映射注解
+
+视图解析配置
+
+`forward` 转发
+`redirect` 重定向
+
+配置内部资源视图解析器
+
+```xml
+<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/jsp/"></property>
+    <property name="suffix" value=".jsp"></property>
+</bean>
+```
+
+### springMVC数据响应方式
+
+1. 页面跳转
+   1. 直接返回字符串
+   2. 通过ModelAndView对象返回
+2. 回写数据
+   1. 直接返回字符串
+   2. 返回对象或集合
+
+TODO fastjson
